@@ -24,6 +24,7 @@ function init() {
         const copy = [...array];
         updates = shuffle(copy);
         isScrambled = true
+        document.getElementById("initButton").classList.add("disabled");
         animate();
     }
 }
@@ -42,6 +43,7 @@ function play() {
         updates = bubbleSort(copy);
         isScrambled = false;
         isSuccessful = true;
+        document.getElementById("initButton").classList.add("disabled");
         animate();
     }
     else {
@@ -75,9 +77,9 @@ function shuffle(array) {
 
     const updates = [];
 
-    for (let i = array.length - 1; i > 0; i--) {
+    for (let i = array.length - 1; i >= 0; i--) {
 
-        const j = Math.floor(Math.random() * i + 1);
+        const j = Math.floor(Math.random() * (i + 1));
 
         updates.push({indices: [i, j],
                       type: "swap"
@@ -116,6 +118,7 @@ function animate() {
 
     if (isScrambled && updates.length === 0) {
         updateBars();
+        document.getElementById("initButton").classList.remove("disabled");
         return;
     }
     else if (!isScrambled && isSuccessful && updates.length === 0) {
@@ -139,9 +142,13 @@ function animate() {
             updateBars(update);
             setTimeout(animate, 1);
         }
+        else {
+            document.getElementById("initButton").classList.remove("disabled");
+        }
     }
     else {
 
+        document.getElementById("initButton").classList.remove("disabled");
         updates = [];
         updateBars();
         stopAnimation = false;
